@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true,  // FIX: Ignora ESLint (incluindo no-explicit-any) no build/prod
+    ignoreDuringBuilds: true,  // Ignora ESLint errors/warnings no build (incluindo no-explicit-any)
   },
   typescript: {
-    ignoreBuildErrors: true,  // FIX: Ignora erros TS/ESLint no build (use só temporário!)
+    ignoreBuildErrors: true,  // Ignora erros TS no build (temporário para deploy)
   },
 };
 
