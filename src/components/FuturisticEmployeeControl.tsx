@@ -33,9 +33,10 @@ interface Employee {
   department?: string;
   dateAdded: string;
 }
-
+// FIX: Defina o tipo union para as tabs internas (adicione aqui, antes do componente ou dentro dele)
+type InternalTabKey = 'employees' | 'items' | 'advances' | 'summary';
 const FuturisticEmployeeControl: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'employees' | 'items' | 'advances' | 'summary'>('employees');
+const [activeTab, setActiveTab] = useState<InternalTabKey>('employees');  // FIX: Adicione <InternalTabKey>
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [storeItems, setStoreItems] = useState<StoreItem[]>([]);
   const [advances, setAdvances] = useState<Advance[]>([]);
@@ -252,7 +253,7 @@ const FuturisticEmployeeControl: React.FC = () => {
           window.open(`https://web.whatsapp.com/send?text=${msg}`, '_blank');
         }
       });
-    } catch (e) {
+    } catch (erro) {
       alert('Erro ao exportar. Tente novamente.');
     }
   };
@@ -286,9 +287,8 @@ const FuturisticEmployeeControl: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-800 mb-2">TL Sistema de Automação</h1>
           <p className="text-gray-600">Controle de Colaboradores - Itens e Adiantamentos</p>
         </div>
-
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
+       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as InternalTabKey)} className="w-full"> {/* FIX: Adicione (value as InternalTabKey) */} 
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="employees">Colaboradores</TabsTrigger>
             <TabsTrigger value="items">Itens</TabsTrigger>
