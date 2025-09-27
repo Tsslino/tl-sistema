@@ -996,6 +996,7 @@ Versão do Sistema: 1.0 | TL Team
 }
 
 // Componente Principal Home (Estados, useEffects, Toggle Language)
+// Componente Principal Home (Estados, useEffects, Toggle Language)
 export default function Home() {
   const [showSystem, setShowSystem] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'colaboradores' | 'itens' | 'vales' | 'relatorios' | 'configuracoes'>('colaboradores');
@@ -1046,9 +1047,294 @@ export default function Home() {
     localStorage.setItem('tl-language', language);
   }, [companyName, language]);
 
+  // Objeto texts COMPLETO (com todas as chaves usadas nas tabs para PT e ZH placeholders)
+  const getTexts = (lang: 'pt' | 'zh'): Texts => {
+    if (lang === 'pt') {
+      return {
+        addEmployees: 'Adicionar Colaboradores',
+        employeeName: 'Nome do Colaborador',
+        employeeNamePlaceholder: 'Digite o nome do colaborador...',
+        companyRole: 'Cargo na Empresa',
+        companyRolePlaceholder: 'Ex: Desenvolvedor, Gerente...',
+        addEmployee: 'Adicionar Colaborador',
+        employeeList: 'Lista de Colaboradores',
+        total: 'Total',
+        employees: 'colaboradores',
+        noEmployees: 'Nenhum colaborador cadastrado ainda.',
+        remove: 'Remover',
+        selectForItems: 'Selecione um Colaborador para Itens',
+        selectedEmployee: 'Colaborador Selecionado',
+        addStoreItems: 'Adicionar Itens da Loja',
+        itemName: 'Nome do Item',
+        itemPlaceholder: 'Ex: Caneta, Notebook...',
+        quantity: 'Quantidade',
+        value: 'Valor Unitário',
+        addItem: 'Adicionar Item',
+        itemsOf: ' - Itens Registrados',
+        noItems: 'Nenhum item registrado para este colaborador.',
+        selectEmployeeItems: 'Selecione um colaborador para gerenciar itens.',
+        selectForAdvance: 'Selecione um Colaborador para Vale',
+        registerAdvance: 'Registrar Adiantamento (Vale)',
+        advanceValue: 'Valor do Adiantamento',
+        reason: 'Motivo do Adiantamento',
+        reasonPlaceholder: 'Ex: Despesas de viagem, Emergência...',
+        registerAdvanceBtn: 'Registrar Vale',
+        advancesOf: ' - Adiantamentos Registrados',
+        noAdvances: 'Nenhum adiantamento registrado para este colaborador.',
+        selectEmployeeAdvance: 'Selecione um colaborador para gerenciar vales.',
+        finalReports: 'Relatórios Finais',
+        filterEmployee: 'Filtrar por Colaborador',
+        allEmployees: 'Todos os Colaboradores',
+        employeesCard: 'Colaboradores',
+        totalRegistered: 'Total Registrados',
+        selected: 'Selecionado',
+        itemsCard: 'Itens',
+        totalItems: 'Total de Itens',
+        from: 'De',
+        advancesCard: 'Adiantamentos',
+        totalAdvances: 'Total de Adiantamentos',
+        grandTotal: 'Grande Total',
+        sumItemsAdvances: 'Soma de Itens + Adiantamentos',
+        summaryByEmployee: 'Resumo por Colaborador',
+        noEmployeesRegistered: 'Nenhum colaborador registrado.',
+        totalToDeduct: 'Total a Descontar',
+        systemSettings: 'Configurações do Sistema',
+        companyInfo: 'Informações da Empresa',
+        companyName: 'Nome da Empresa',
+        companyPlaceholder: 'Digite o nome da empresa...',
+        saveSettings: 'Salvar Configurações',
+        backupData: 'Backup e Restauração de Dados',
+        exportData: 'Exportar Backup (JSON)',
+        clearData: 'Limpar Todos os Dados',
+        systemTheme: 'Configurações Avançadas',
+        darkTheme: 'Tema Escuro',
+        lightTheme: 'Tema Claro',
+        autoTheme: 'Tema Automático',
+        systemInfo: 'Informações do Sistema',
+        version: 'Versão',
+        type: 'Tipo',
+        systemType: 'Sistema de Gerenciamento de RH e Estoque',
+        developers: 'Desenvolvedores',
+        creationDate: 'Data de Criação',
+        colaboradores: 'Colaboradores',
+        itens: 'Itens',
+        vales: 'Vales',
+        relatorios: 'Relatórios',
+        configuracoes: 'Configurações',
+        autoSaveLabel: 'Auto-salvar ativado'  // Corrigi o bug de texts.autoSave
+      };
+    } else {  // ZH (placeholders em chinês simplificado)
+      return {
+        addEmployees: '添加员工',
+        employeeName: '员工姓名',
+        employeeNamePlaceholder: '输入姓名...',
+        companyRole: '公司职位',
+        companyRolePlaceholder: '例如：开发者...',
+        addEmployee: '添加员工',
+        employeeList: '员工列表',
+        total: '总数',
+        employees: '员工',
+        noEmployees: '尚未注册员工。',
+        remove: '删除',
+        selectForItems: '选择员工管理物品',
+        selectedEmployee: '已选员工',
+        addStoreItems: '添加商店物品',
+        itemName: '物品名称',
+        itemPlaceholder: '例如：笔，笔记本...',
+        quantity: '数量',
+        value: '单价',
+        addItem: '添加物品',
+        itemsOf: ' - 注册物品',
+        noItems: '此员工无物品。',
+        selectEmployeeItems: '选择员工管理物品。',
+        selectForAdvance: '选择员工管理预付款',
+        registerAdvance: '注册预付款',
+        advanceValue: '预付款金额',
+        reason: '预付款原因',
+        reasonPlaceholder: '例如：旅行费用...',
+        registerAdvanceBtn: '注册预付款',
+        advancesOf: ' - 注册预付款',
+        noAdvances: '此员工无预付款。',
+        selectEmployeeAdvance: '选择员工管理预付款。',
+        finalReports: '最终报告',
+        filterEmployee: '按员工过滤',
+        allEmployees: '所有员工',
+        employeesCard: '员工',
+        totalRegistered: '总注册数',
+        selected: '已选',
+        itemsCard: '物品',
+        totalItems: '物品总数',
+        from: '来自',
+        advancesCard: '预付款',
+        totalAdvances: '预付款总数',
+        grandTotal: '总计',
+        sumItemsAdvances: '物品 + 预付款总和',
+        summaryByEmployee: '按员工摘要',
+        noEmployeesRegistered: '无注册员工。',
+        totalToDeduct: '总扣除额',
+        systemSettings: '系统设置',
+        companyInfo: '公司信息',
+        companyName: '公司名称',
+        companyPlaceholder: '输入公司名称...',
+        saveSettings: '保存设置',
+        backupData: '备份和恢复',
+        exportData: '导出备份 (JSON)',
+        clearData: '清除所有数据',
+        systemTheme: '高级设置',
+        darkTheme: '深色主题',
+        lightTheme: '浅色主题',
+        autoTheme: '自动主题',
+        systemInfo: '系统信息',
+        version: '版本',
+        type: '类型',
+        systemType: '人力资源和库存管理系统',
+        developers: '开发者',
+        creationDate: '创建日期',
+        colaboradores: '员工',
+        itens: '物品',
+        vales: '预付款',
+        relatorios: '报告',
+        configuracoes: '设置',
+        autoSaveLabel: '自动保存已启用'
+      };
+    }
+  };
+
+  const texts = getTexts(language);
+
   const toggleLanguage = () => {
     setLanguage(prevLang => (prevLang === 'pt' ? 'zh' : 'pt'));
   };
 
-  // (Objeto texts, JSX Home e export default continuam na Sub-Part 4.2)
-};  
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white p-6">
+      {/* Header com Logo e Toggle Language */}
+      <div className="flex justify-between items-center mb-8">
+        <TLLogo size="normal" position="center" />
+        <button 
+          onClick={toggleLanguage} 
+          className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 transition-all duration-300"
+        >
+          {language === 'pt' ? 'ZH' : 'PT'}
+        </button>
+      </div>
+
+      {/* Toggle para mostrar o sistema */}
+      {!showSystem ? (
+        <div className="text-center py-12">
+          <h1 className="text-4xl font-bold mb-4">{language === 'pt' ? 'Bem-vindo ao TL Sistemas' : '欢迎使用 TL 系统'}</h1>
+          <button
+            onClick={() => setShowSystem(true)}
+            className="px-8 py-4 bg-green-500 rounded-lg text-xl font-bold hover:bg-green-600 transition-all duration-300"
+          >
+            {language === 'pt' ? 'Entrar no Sistema' : '进入系统'}
+          </button>
+        </div>
+      ) : (
+        <>
+          {/* Navegação de Tabs (completa com todas as 5 tabs) */}
+          <div className="flex space-x-4 mb-8 overflow-x-auto pb-2 border-b border-white/20">
+            <button
+              onClick={() => setActiveTab('colaboradores')}
+              className={`px-6 py-3 rounded-t-lg whitespace-nowrap transition-all duration-300 flex items-center space-x-2 ${
+                activeTab === 'colaboradores'
+                  ? 'bg-blue-500 text-white shadow-lg'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
+              }`}
+            >
+              <span>👥</span>
+              <span>{texts.colaboradores || 'Colaboradores'}</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('itens')}
+              className={`px-6 py-3 rounded-t-lg whitespace-nowrap transition-all duration-300 flex items-center space-x-2 ${
+                activeTab === 'itens'
+                  ? 'bg-green-500 text-white shadow-lg'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
+              }`}
+            >
+              <span>📦</span>
+              <span>{texts.itens || 'Itens'}</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('vales')}
+              className={`px-6 py-3 rounded-t-lg whitespace-nowrap transition-all duration-300 flex items-center space-x-2 ${
+                activeTab === 'vales'
+                  ? 'bg-purple-500 text-white shadow-lg'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
+              }`}
+            >
+              <span>💰</span>
+              <span>{texts.vales || 'Vales'}</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('relatorios')}
+              className={`px-6 py-3 rounded-t-lg whitespace-nowrap transition-all duration-300 flex items-center space-x-2 ${
+                activeTab === 'relatorios'
+                  ? 'bg-yellow-500 text-white shadow-lg'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
+              }`}
+            >
+              <span>📊</span>
+              <span>{texts.relatorios || 'Relatórios'}</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('configuracoes')}
+              className={`px-6 py-3 rounded-t-lg whitespace-nowrap transition-all duration-300 flex items-center space-x-2 ${
+                activeTab === 'configuracoes'
+                  ? 'bg-gray-500 text-white shadow-lg'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
+              }`}
+            >
+              <span>⚙️</span>
+              <span>{texts.configuracoes || 'Configurações'}</span>
+            </button>
+          </div>
+
+          {/* Conteúdo das Tabs (renders condicionais completos) */}
+          <div className="max-w-7xl mx-auto">
+            {activeTab === 'colaboradores' && (
+              <ColaboradoresTab employees={employees} setEmployees={setEmployees} texts={texts} />
+            )}
+            {activeTab === 'itens' && (
+              <ItensTab
+                employees={employees}
+                selectedEmployee={selectedEmployee}
+                setSelectedEmployee={setSelectedEmployee}
+                items={items}
+                setItems={setItems}
+                texts={texts}
+              />
+            )}
+            {activeTab === 'vales' && (
+              <ValesTab
+                employees={employees}
+                selectedEmployee={selectedEmployee}
+                setSelectedEmployee={setSelectedEmployee}
+                advances={advances}
+                setAdvances={setAdvances}
+                texts={texts}
+              />
+            )}
+            {activeTab === 'relatorios' && (
+              <RelatoriosTab employees={employees} items={items} advances={advances} texts={texts} />
+            )}
+            {activeTab === 'configuracoes' && (
+              <ConfiguracoesTab
+                companyName={companyName}
+                setCompanyName={setCompanyName}
+                texts={texts}
+                employees={employees}
+                setEmployees={setEmployees}
+                items={items}
+                setItems={setItems}
+                advances={advances}
+                setAdvances={setAdvances}
+              />
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
